@@ -33,20 +33,21 @@ class AuthenticationController < ApplicationController
 
   def register
     @user = User.new(user_params)
-    if @user.valid?
-      @user.save
+    if @user.save
       session[:user_id] = @user_id
+      UserMailer.with(user: @user).welcome_email.deliver_now
+
       redirect_to :root, notice: 'Registration Successful'
     else     
       # Errors will be shown with a helper function
-      puts (@user.errors.inspect)
+      puts ("\n" + @user.errors.inspect + "\n")
       render :new_user
     end
   end
 
   def account_settings
     # TODO what if none?
-    @user = current_user 
+    @user = current_user
   end
 
   def set_account_info
@@ -65,6 +66,22 @@ class AuthenticationController < ApplicationController
       else
         render 'account_settings'
       end
+    end
+  end
+
+  def destroy_user
+    username = params[:username]
+    @user = User.find_by_username(username)
+
+    if not @user.nil?
+      @user.destroy 
+      if current_user and username == current_user.username
+        redirect_to 'signed_out'
+      else
+        redirect_to :root, notice: "User #{username} has been deleted from the database."
+      end
+    else
+      redirect_to :root, notice: "User #{username} doesn't exist."
     end
   end
 
@@ -88,6 +105,5 @@ class AuthenticationController < ApplicationController
     end
 
     values.permit(:username, :email, :password, :password_confirmation)
-
   end
 end

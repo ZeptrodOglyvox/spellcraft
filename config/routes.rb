@@ -15,4 +15,6 @@ Rails.application.routes.draw do
   put '/account_settings', to: 'authentication#set_account_info'
 
   get '/password_sent', to: 'authentication#password_sent'
+
+  get '/delete/:username', to: 'authentication#destroy_user'
 end
