@@ -1,0 +1,18 @@
+<h2>Edit Account Information</h2>
+
+<p>Update the fields you want, or leave blank for no updates.</p>
+
+<%= form_with model: @user, url: account_settings_path, method: :put do |f| %>
+<%= render partial: 'user_fields', locals: {f: f} %>
+
+<p>
+    <%= label_tag :current_password, 'Current Password' %>
+    <%= text_field_tag :current_password %>
+</p>
+
+<p>
+    <%= f.submit 'Update Info' %>&nbsp;&nbsp;&nbsp;
+    <%= f.submit 'Clear', type: :reset %>
+</p>
+
+<% end %>

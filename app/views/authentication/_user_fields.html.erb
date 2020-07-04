@@ -1,0 +1,20 @@
+<p>
+    <%= f.label 'Username' %>
+    <%= f.text_field :username %><br>
+    <%= show_field_error(@user, :username) %>
+</p>
+<p>
+    <%= f.label 'Email' %>
+    <%= f.text_field :email %>
+    <%= show_field_error(@user, :email)  %>
+</p>
+<p>
+    <%= f.label 'Password' %>
+    <%= f.text_field :password %>
+    <%= show_field_error(@user, :password)  %>
+</p>
+<p>
+    <%= f.label 'Confirm Password' %>
+    <%= f.text_field :password_confirmation %>
+    <%= show_field_error(@user, :password_confirmation)  %>
+</p>
