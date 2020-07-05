@@ -17,4 +17,10 @@ Rails.application.routes.draw do
   get '/password_sent', to: 'authentication#password_sent'
 
   get '/delete/:username', to: 'authentication#destroy_user'
+
+  get '/forgot_password', to: 'authentication#forgot_password'
+  put '/forgot_password', to: 'authentication#send_password_reset_instructions'
+
+  get '/password_reset', to: 'authentication#password_reset'
+  put '/password_reset', to: 'authentication#new_password'
 end

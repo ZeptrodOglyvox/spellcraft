@@ -35,7 +35,7 @@ class AuthenticationController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       session[:user_id] = @user_id
-      UserMailer.with(user: @user).welcome_email.deliver_now
+      UserMailer.with(user: @user).welcome_email.deliver_later
 
       redirect_to :root, notice: 'Registration Successful'
     else     
@@ -85,6 +85,58 @@ class AuthenticationController < ApplicationController
     end
   end
 
+  def forgot_password
+    @user = User.new
+  end
+
+  def send_password_reset_instructions
+    id = params[:user][:username]
+
+    if id =~ /.+@.+\..+/
+      @user = User.find_by_email(id)
+    else
+      @user = User.find_by_username(id)
+    end
+    
+    if @user.nil?
+      @user = User.new
+      flash.now[:error] = 'We could not find the username/email.'
+      render 'forgot_password'
+    else
+      @user.password_reset_token = SecureRandom.urlsafe_base64
+      @user.token_expires_after = 24.hours.from_now
+
+      @user.save(validate: false) # TODO Think about this more
+
+      UserMailer.with(user: @user).reset_password_email.deliver_later
+      redirect_to :sign_in, notice: ' Password reset instructions have been sent to your email.'
+    end
+  end
+
+  def password_reset
+    @user = User.find_by(password_reset_token: params[:token])
+    if @user.nil?
+      redirect_to :root, error: 'The password reset link you are used is invalid.'
+    elsif @user.token_expires_after < DateTime.now
+      clear_password_reset(@user)
+      redirect_to :root, error: 'The password reset link has expired, please request a new one.' 
+    end
+  end
+
+  def new_password 
+    reset_params = params.require(:user).permit(:password, :password_confirmation)
+    @user = User.find_by_username(params[:user][:username]) # Does this work? Why?
+
+    if @user.update(reset_params)
+      redirect_to :sign_in, notice: 'Password updated successfully.'
+    else
+      # TODO: If we used a _tag form this wouldn't be necessary...
+      @user.password = ''
+      @user.password_confirmation = ''
+      render :password_reset
+    end
+  end
+
   private
 
   def login_params
@@ -97,13 +149,12 @@ class AuthenticationController < ApplicationController
   end
 
   def update_params
-    values = params.require(:user).reject! { |key, value| value.nil? or value.blank? }
-
-    if not values.has_key?(:password)
-      values[:password] = params[:current_password]  # TODO ew, do better
-      values[:password_confirmation] = params[:current_password]  # TODO ew, do better
-    end
-
-    values.permit(:username, :email, :password, :password_confirmation)
+    values = params.require(:user) \
+      .reject! { |key, value| value.nil? or value.blank? } \
+      .permit(:username, :email, :password, :password_confirmation)
+      
+    values[:password] ||= params[:current_password]  # TODO ew, do better
+    values[:password_confirmation] ||= params[:current_password]  # TODO ew, do better
+    values
   end
 end
