@@ -54,3 +54,5 @@ gem 'pg'
 gem 'bcrypt'
 
 gem 'valid_email2'
+
+gem 'recaptcha', '~> 5.5', require: 'recaptcha/rails'

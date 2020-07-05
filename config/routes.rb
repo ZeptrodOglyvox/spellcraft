@@ -23,4 +23,7 @@ Rails.application.routes.draw do
 
   get '/password_reset', to: 'authentication#password_reset'
   put '/password_reset', to: 'authentication#new_password'
+
+  get '/admin/users', to: 'admin#users'
+  delete '/admin/:id', to: 'admin#delete_user', as: 'user'
 end

@@ -13,6 +13,11 @@
   <%= f.submit 'Sign In' %>&nbsp;&nbsp;&nbsp;
   <%= f.submit 'Clear', type: 'reset' %>
 </p>
+
+<p>
+  <%= label_tag :remember_me, 'Remember me on this computer' %>
+  <%= check_box_tag :remember_me %>
+</p>
 <% end %>
 
 <%= link_to 'forgot your password?', forgot_password_path %>
