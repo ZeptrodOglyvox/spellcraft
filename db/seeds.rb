@@ -6,5 +6,10 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-User.destroy_all
-user = User.create!(username:'babis', email:'babis@gmail.com', password:12345, password_confirmation:12345)
+Spell.create([
+    {
+        name: 'Fireball', level: 3, description: 'A very good spell.', 
+        casting_time: '1 action', range: '30 feet', components: 'V, M (a rat\'s tail)',
+        duration: 'instantaneous', concentration: true, ritual: false
+    }
+])

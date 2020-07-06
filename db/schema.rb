@@ -10,10 +10,46 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_05_172524) do
+ActiveRecord::Schema.define(version: 2020_07_06_205433) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "caster_classes", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "caster_classes_spells", id: false, force: :cascade do |t|
+    t.bigint "caster_class_id", null: false
+    t.bigint "spell_id", null: false
+  end
+
+  create_table "schools", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "schools_spells", id: false, force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.bigint "spell_id", null: false
+  end
+
+  create_table "spells", force: :cascade do |t|
+    t.string "name"
+    t.integer "level"
+    t.text "description"
+    t.string "casting_time"
+    t.string "range"
+    t.string "components"
+    t.string "duration"
+    t.boolean "concentration"
+    t.boolean "ritual"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "username"

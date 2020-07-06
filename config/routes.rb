@@ -26,4 +26,6 @@ Rails.application.routes.draw do
 
   get '/admin/users', to: 'admin#users'
   delete '/admin/:id', to: 'admin#delete_user', as: 'user'
+
+  get '/test', to: 'home#test'
 end

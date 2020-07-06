@@ -1,8 +1,8 @@
-<p>Sign Up</p>
+<% content_for :page_title do %> Sign Up <% end %>
 
 <!-- TODO: @user seems to not be the same as in controller -->
 
-<%= form_with model: @user, url: new_user_path, method: :put do |f| %>
+<%= form_with model: @user, url: new_user_path, method: :put, local: true do |f| %>
 <%= render partial: 'user_fields', locals: {f: f} %>
 <p>
     <%= recaptcha_tags %>

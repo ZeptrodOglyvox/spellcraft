@@ -1,8 +1,8 @@
-<h2>Edit Account Information</h2>
+<% content_for :page_title do %> Edit Account Information <% end %>
 
 <p>Update the fields you want, or leave blank for no updates.</p>
 
-<%= form_with model: @user, url: account_settings_path, method: :put do |f| %>
+<%= form_with model: @user, url: account_settings_path, method: :put, local: true do |f| %>
 <%= render partial: 'user_fields', locals: {f: f} %>
 
 <p>

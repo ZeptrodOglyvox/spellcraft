@@ -8,7 +8,7 @@ class AuthenticationController < ApplicationController
   def login
     id = params[:user][:username]
     password = params[:user][:password]
-    if id[/@/] # TODO: not good enough
+    if id =~ /.+@.+\..+/ # TODO: not good enough
       @user = User.authenticate_by_email(id, password)
     else  
       @user = User.authenticate_by_username(id, password)
@@ -22,7 +22,7 @@ class AuthenticationController < ApplicationController
       redirect_to :root, notice: 'Sign in successful.'
     else
       flash.now[:error] = 'Invalid login credentials.'
-      render 'sign_in'
+      render :sign_in
     end
   end
 
@@ -38,23 +38,21 @@ class AuthenticationController < ApplicationController
   end
 
   def register
-    if verify_recaptcha
-      @user = User.new(user_params)
+    @user = User.new 
+
+    if verify_recaptcha()
+      @user.assign_attributes(user_params)
       @user.signed_up_on = DateTime.now
       @user.last_sign_in = @user.signed_up_on
-      @user.save(validate:false)
 
-      if @user.save
-        update_authentication_token(@user, nil)
+      if @user.save 
         # UserMailer.with(user: @user).welcome_email.deliver_later
-
-        redirect_to :sign_in, notice: 'Registration successful, you can now sign in with you credentials.'
-      else     
-        # Errors will be shown with a helper function
-        puts ("\n" + @user.errors.inspect + "\n")
+        redirect_to :sign_in, notice: 'Registration successful, you can now sign in with your credentials.'
+      else
         render :new_user
       end
     else
+      flash.delete(:recaptcha_error)
       flash.now[:error] = 'reCAPTCHA verification failed, please try again.'
       render action: 'new_user'
     end
@@ -181,7 +179,6 @@ class AuthenticationController < ApplicationController
   end
 
   def update_authentication_token(user, remember_me)
-
     if remember_me == "1"
       auth_token = SecureRandom.urlsafe_base64
       user.authentication_token = auth_token
