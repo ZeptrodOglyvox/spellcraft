@@ -9,7 +9,8 @@
 Spell.create([
     {
         name: 'Fireball', level: 3, description: 'A very good spell.', 
-        casting_time: '1 action', range: '30 feet', components: 'V, M (a rat\'s tail)',
+        casting_time: '1 ActIon', range: '30 feet', components: 'V, M (a rat\'s tail)',
         duration: 'instantaneous', concentration: true, ritual: false
     }
 ])
+

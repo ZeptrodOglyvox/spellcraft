@@ -1,0 +1,21 @@
+<% content_for :page_title do %> Spell Creation <% end %>
+
+<%= form_with model: @spell, local: true do |f| %>
+<p>
+    <%= f.label :name, 'Name' %>
+    <%= f.text_field :name%>
+    <%= show_field_error(@spell, :name) %>
+</p>
+
+<p>
+    <%= f.label :level, 'Level' %>
+    <%= spell_levels = ('1'..'9').to_a.unshift('Cantrip');
+        f.select :level, spell_levels.zip((0..9).to_a) %>
+    <%= show_field_error(@spell, :name) %>
+
+</p>
+
+<p>
+    <%= f.submit 'Create Spell' %>
+</p>
+<% end %>

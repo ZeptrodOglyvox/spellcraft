@@ -28,4 +28,6 @@ Rails.application.routes.draw do
   delete '/admin/:id', to: 'admin#delete_user', as: 'user'
 
   get '/test', to: 'home#test'
+
+  resources :spells
 end
