@@ -1,0 +1,54 @@
+<%= form_with model: @spell, local: true do |f| %>
+<p>
+    <%= f.label :name, 'Name' %>
+    <%= f.text_field :name%>
+    <%= show_field_error(@spell, :name) %>
+</p>
+
+<p>
+    <%= f.label :level, 'Level' %>
+    <!-- options are: ['Cantrip', 0], ['1', 1], ['2', 2] etc.-->
+    <%= spell_levels = ('1'..'9').to_a.unshift('Cantrip')
+        f.select :level, spell_levels.zip((0..9).to_a) %>
+    <%= show_field_error(@spell, :name) %>
+</p>
+
+<p>
+    <%= f.label :caster_class_ids, 'Classes: ' %>
+    <%= f.collection_check_boxes :caster_class_ids, CasterClass.all, :id, :name %>
+    <%= show_field_error(@spell, :caster_class_ids) %>
+</p>
+
+<p>
+    <%= f.label :school, 'School' %>
+    <%= f.select :school, Spell.schools %>
+</p>
+
+<% [:casting_time, :range, :duration, :components].each do |elem| %>
+<p>
+    <%= f.label elem, elem.to_s.sub(/_/, ' ').capitalize %>
+    <%= f.text_field elem %>
+    <%= show_field_error(@spell, elem) %>
+</p>
+<% end %>
+
+<% [:concentration, :ritual].each do |elem| %>
+<p>
+    <%= f.label elem, elem.to_s.capitalize %>
+    <%= f.check_box elem %>
+    <%= show_field_error(@spell, elem) %>
+</p>
+<% end %>
+
+<p>
+    <%= f.label :description, 'Description' %>
+    <%= f.text_area :description %>
+    <%= show_field_error(@spell, :description) %>
+</p>
+
+<p>
+    <%= f.submit button %>
+</p>
+<% end %>
+
+<%= link_to 'Back', :back %>

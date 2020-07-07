@@ -15,7 +15,8 @@
   <% if current_user %>
   Logged in as: <%= current_user.username %>
   <%= link_to 'Sign Out',  signed_out_path %>
-  <%= link_to 'Account Settings', account_settings_path %>
+  <%= link_to 'Account Settings', account_settings_path %><br>
+  <%= link_to 'All Spells', spells_path %>
   <%= link_to 'New Spell', new_spell_path %>
   <% else %>
   <%= link_to 'Sign In',  sign_in_path %> or
@@ -23,12 +24,13 @@
   <% end %>
 </nav>
 
-
-<h2><%= yield :page_title %></h2>
-
 <% flash.each do |name, msg| %>
 <%= content_tag :div, msg, id: "flash_#{name}" %>
 <% end %>
+
+<h2><%= yield :page_title %></h2>
+
+
 
 <body>
   <%= yield %>

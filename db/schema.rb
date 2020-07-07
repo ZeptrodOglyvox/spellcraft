@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_06_205433) do
+ActiveRecord::Schema.define(version: 2020_07_07_192514) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,17 +26,6 @@ ActiveRecord::Schema.define(version: 2020_07_06_205433) do
     t.bigint "spell_id", null: false
   end
 
-  create_table "schools", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "schools_spells", id: false, force: :cascade do |t|
-    t.bigint "school_id", null: false
-    t.bigint "spell_id", null: false
-  end
-
   create_table "spells", force: :cascade do |t|
     t.string "name"
     t.integer "level"
@@ -49,6 +38,7 @@ ActiveRecord::Schema.define(version: 2020_07_06_205433) do
     t.boolean "ritual"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "school"
   end
 
   create_table "users", force: :cascade do |t|

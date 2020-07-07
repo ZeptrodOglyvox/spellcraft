@@ -1,0 +1,32 @@
+<%= content_for :page_title do @spell.name end %>
+
+<p>
+    <strong>Classes: </strong> <%= @spell.caster_classes.pluck(:name).join(', ') %>
+</p>
+
+<% [:level, :casting_time, :range, :components].each do |elem| %>
+<p>
+    <strong><%= elem.to_s.sub(/_/, ' ').capitalize%>: </strong>
+    <%= (@spell[elem] if @spell[elem] != 0) or 'Cantrip' %>
+</p>
+<% end %>
+
+<p>
+    <strong>Duration: </strong>
+    <%= (@spell.concentration ? 'Concentration, up to ' : '') +
+        @spell.duration
+    %>
+</p>
+
+<p><i>
+        <%= @spell.description %>
+    </i></p>
+
+<p>
+    <%= link_to 'Edit', edit_spell_path(@spell) %>
+</p>
+
+<p>
+    Created at: <%= @spell.created_at.to_date %><br>
+    Last update: <%= @spell.updated_at.to_date %>
+</p>

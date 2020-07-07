@@ -2,15 +2,23 @@ class Spell < ApplicationRecord
     has_and_belongs_to_many :caster_classes
     has_and_belongs_to_many :schools
 
+    attr_accessor :caster_class_ids
+
     before_validation :downcase_everything
     
-    validate :casting_time_is_legal, :range_is_legal, :components_are_legal, :duration_is_legal
+    validate :has_caster_classes, :casting_time_is_legal, :range_is_legal, :components_are_legal, :duration_is_legal
 
     validates :name, :description, :casting_time, :range, :duration, :components, presence: true
     validates :level, presence: true, inclusion: {in: (0..9), message: 'Spell must be either a cantrip or have a level 1-9'}
+    validates :school, presence: true, inclusion: {in: self.class.schools, message: 'Invalid School value.'}
     validates :concentration, inclusion: {in: [true, false], message: 'Invalid Concentration value.'}
     validates :ritual, inclusion: {in: [true, false], message: 'Invalid Ritual value.'}
 
+    def self.schools
+        ['Conjuration',  'Necromancy', 'Evocation', 'Abjuration', 'Transmutation', 'Divination', 'Enchantment', 'Illusion']
+    end
+
+    # TODO make school and class mandatory
     def casting_time_is_legal
         if casting_time
             specific = ['1 action', '1 bonus action', '1 reaction', 'special']
@@ -55,6 +63,10 @@ class Spell < ApplicationRecord
             if not (specific.include?(duration) or duration =~ time_units)
                 errors.add(:duration, 'Please specify a valid duration. (e.g. "instantaneous", "until dispelled", "10 days")')
             end
+
+            if duration == 'instantaneous' and concentration
+                errors.add(:duration, 'Concentration spell can\'t be instantaneous.')
+            end
         end
     end
 
@@ -62,6 +74,13 @@ class Spell < ApplicationRecord
         if [casting_time, range].all?
             casting_time.downcase!
             range.downcase!
+        end
+    end
+
+    def has_caster_classes
+        caster_class_ids.delete('')
+        if caster_class_ids.empty?
+            errors.add(:caster_class_ids, 'Spell must belong to at least one caster class.')
         end
     end
 end

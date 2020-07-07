@@ -6,6 +6,7 @@ class User < ApplicationRecord
     validates :email, presence: true, uniqueness: true, 'valid_email_2/email': true
     validates :password, presence: true, confirmation: true   
     validates :password_confirmation, presence: true
+    
 
     def self.authenticate_by_email(email, password)
         user = User.find_by_email(email)

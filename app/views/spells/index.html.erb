@@ -1,0 +1,13 @@
+<table>
+    <tr>
+        <th width="70%">Name</th>
+    </tr>
+
+    <% @spells.each do |spell| %>
+    <tr>
+        <td><%= link_to spell.name, spell_path(spell) %></td>
+        <td><%= link_to 'Edit', edit_spell_path(spell) %> </td>
+        <td><%= link_to 'Delete', spell_path(spell), method: :delete %> </td>
+    </tr>
+    <% end %>
+</table>
