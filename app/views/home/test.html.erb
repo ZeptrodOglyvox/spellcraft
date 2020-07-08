@@ -1,1 +1,4 @@
-<p>test view</p>
+<%= form_with model: @spell, local: true, url: 'test2' do |f| %>
+<%= f.collection_check_boxes :caster_class_ids, CasterClass.all, :id, :name %> 
+<%= f.submit 'ok' %>
+<% end %>

@@ -1,13 +1,23 @@
 <%= content_for :page_title do @spell.name end %>
 
 <p>
+    <i>
+        <% if @spell.level != 0 %>
+        <%= i2ord(@spell.level) %> level <%= @spell.school %>
+        <% else %>
+        <%= @spell.school %> Cantrip
+        <% end %>
+    </i>
+</p>
+
+<p>
     <strong>Classes: </strong> <%= @spell.caster_classes.pluck(:name).join(', ') %>
 </p>
 
-<% [:level, :casting_time, :range, :components].each do |elem| %>
+<% [:casting_time, :range, :components].each do |elem| %>
 <p>
     <strong><%= elem.to_s.sub(/_/, ' ').capitalize%>: </strong>
-    <%= (@spell[elem] if @spell[elem] != 0) or 'Cantrip' %>
+    <%= @spell[elem] %>
 </p>
 <% end %>
 
@@ -18,15 +28,15 @@
     %>
 </p>
 
-<p><i>
-        <%= @spell.description %>
-    </i></p>
+<p>
+    <i><%= @spell.description %></i>
+</p>
 
 <p>
     <%= link_to 'Edit', edit_spell_path(@spell) %>
 </p>
 
 <p>
-    Created at: <%= @spell.created_at.to_date %><br>
+    Created at: <%= @spell.created_at.to_date %>, by user <%= @spell.user.username %><br>
     Last update: <%= @spell.updated_at.to_date %>
 </p>

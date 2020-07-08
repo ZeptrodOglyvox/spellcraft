@@ -11,6 +11,12 @@
     <%= spell_levels = ('1'..'9').to_a.unshift('Cantrip')
         f.select :level, spell_levels.zip((0..9).to_a) %>
     <%= show_field_error(@spell, :name) %>
+    
+    &nbsp;&nbsp;&nbsp;
+    
+    <%= f.label :school, 'School' %>
+    <%= f.select :school, Spell.schools %>
+    <%= show_field_error(@spell, :school) %>
 </p>
 
 <p>
@@ -19,10 +25,7 @@
     <%= show_field_error(@spell, :caster_class_ids) %>
 </p>
 
-<p>
-    <%= f.label :school, 'School' %>
-    <%= f.select :school, Spell.schools %>
-</p>
+
 
 <% [:casting_time, :range, :duration, :components].each do |elem| %>
 <p>

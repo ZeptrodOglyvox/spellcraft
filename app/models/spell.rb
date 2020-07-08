@@ -1,25 +1,23 @@
 class Spell < ApplicationRecord
     has_and_belongs_to_many :caster_classes
-    has_and_belongs_to_many :schools
+    belongs_to :user
 
     attr_accessor :caster_class_ids
 
-    before_validation :downcase_everything
-    
-    validate :has_caster_classes, :casting_time_is_legal, :range_is_legal, :components_are_legal, :duration_is_legal
+    SCHOOLS = [
+        'Conjuration',  'Necromancy', 'Evocation', 'Abjuration', 
+        'Transmutation', 'Divination', 'Enchantment', 'Illusion'
+    ]
 
-    validates :name, :description, :casting_time, :range, :duration, :components, presence: true
-    validates :level, presence: true, inclusion: {in: (0..9), message: 'Spell must be either a cantrip or have a level 1-9'}
-    validates :school, presence: true, inclusion: {in: self.class.schools, message: 'Invalid School value.'}
-    validates :concentration, inclusion: {in: [true, false], message: 'Invalid Concentration value.'}
-    validates :ritual, inclusion: {in: [true, false], message: 'Invalid Ritual value.'}
-
-    def self.schools
-        ['Conjuration',  'Necromancy', 'Evocation', 'Abjuration', 'Transmutation', 'Divination', 'Enchantment', 'Illusion']
+    def downcase_everything
+        [casting_time, range].each do |field|
+            field.downcase! if field
+        end
     end
 
-    # TODO make school and class mandatory
-    def casting_time_is_legal
+     # TODO move caster_class procedure in here using the ids, do validations etc.
+
+     def casting_time_is_legal
         if casting_time
             specific = ['1 action', '1 bonus action', '1 reaction', 'special']
             time_units = /[1-9]\d* (round|second|minute|hour|day|week|month|year)s?/
@@ -70,17 +68,26 @@ class Spell < ApplicationRecord
         end
     end
 
-    def downcase_everything
-        if [casting_time, range].all?
-            casting_time.downcase!
-            range.downcase!
-        end
-    end
-
     def has_caster_classes
         caster_class_ids.delete('')
         if caster_class_ids.empty?
             errors.add(:caster_class_ids, 'Spell must belong to at least one caster class.')
         end
     end
+
+    before_validation :downcase_everything
+
+    validate :has_caster_classes, :casting_time_is_legal, :range_is_legal, :components_are_legal, :duration_is_legal
+
+    validates :name, :description, :casting_time, :range, :duration, :components, presence: true
+    validates :level, presence: true, inclusion: {in: (0..9), message: 'Spell must be either a cantrip or have a level 1-9'}
+    validates :school, presence: true, inclusion: {in: SCHOOLS, message: 'Invalid School value.'}
+    validates :concentration, inclusion: {in: [true, false], message: 'Invalid Concentration value.'}
+    validates :ritual, inclusion: {in: [true, false], message: 'Invalid Ritual value.'}
+    validates :user, presence: true
+
+    def self.schools 
+        SCHOOLS 
+    end 
 end
+

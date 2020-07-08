@@ -1,6 +1,8 @@
 class SpellsController < ApplicationController
+    before_action :require_authentication
+
     def index
-        @spells = Spell.all
+        @spells = Spell.all # .where('user_id = ? or user_id IS NULL', current_user.id)
     end
 
     def new
@@ -9,16 +11,18 @@ class SpellsController < ApplicationController
 
     def create
         @spell = Spell.new(spell_params)
+        @spell.user = current_user
         if add_caster_classes(@spell) and @spell.save
             # TODO change to spell show
             redirect_to @spell, notice: "Spell #{spell_params[:name]} created successfully."
         else
+            puts "HERE: " + @spell.caster_class_ids.inspect
             render :new
         end            
     end
 
     def show 
-        @spell = Spell.find_by_id(params[:id])
+        @spell = get_spell_by_id(params[:id])
         
         if @spell.nil?
             flash.now[:error] = 'Spell id does not exist.'
@@ -27,7 +31,8 @@ class SpellsController < ApplicationController
     end
 
     def edit
-        @spell = Spell.find_by_id(params[:id])
+        @spell = get_spell_by_id(params[:id])
+        @spell.caster_class_ids = @spell.caster_classes.ids
 
         if @spell.nil?
             flash[:error] = 'Invalid spell id.'
@@ -36,7 +41,7 @@ class SpellsController < ApplicationController
     end
 
     def update
-        @spell = Spell.find_by_id(params[:id])
+        @spell = Spell.get_spell_by_id(params[:id])
 
         @spell.assign_attributes(spell_params)
 
@@ -48,7 +53,7 @@ class SpellsController < ApplicationController
     end
 
     def destroy
-        @spell = Spell.find_by_id(params[:id])
+        @spell = get_spell_by_id(params[:id])
         if @spell.nil?
             flash[:error] = 'Invalid spell id.'
         else 
@@ -66,12 +71,15 @@ class SpellsController < ApplicationController
     ]
 
     def spell_params
-        params.require(:spell).permit(*SPELL_ATTRIBUTES)
+        ret = params.require(:spell).permit(*SPELL_ATTRIBUTES)
+        ret[:caster_class_ids].delete("")
+        ret[:caster_class_ids].map! {|x| x.to_i }
+        ret
     end
 
     def add_caster_classes(spell)
         begin
-            classes = CasterClass.find(class_ids)
+            classes = CasterClass.find(spell_params[:caster_class_ids])
         rescue ActiveRecord::RecordNotFound
             flash[:error] = "Requested invalid class ids: #{ids}"
             nil
@@ -85,11 +93,12 @@ class SpellsController < ApplicationController
         end
     end
 
-    def class_ids 
-        ret = spell_params[:caster_class_ids]
-        ret.delete("")
-        ret.map {|x| x.to_i }
-        ret
+    def get_spell_by_id(id)
+        spell = Spell.find_by_id(id)
+        if spell and spell.user != current_user
+            flash[:error] = 'You must be the spell\'s creator to access this page.'
+            redirect_to :root
+        end
+        spell
     end
-
 end

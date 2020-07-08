@@ -1,10 +1,13 @@
 class HomeController < ApplicationController
     def test
-        if false # or true
-            render :test 
-        else
-            flash.now[:error] = "message"
-            render 'authentication/sign_in'
-        end
+        @spell = Spell.new
+        @spell.caster_class_ids = [1,2]
+        render :test
+    end
+
+    def test2
+        # @spell = Spell.new
+        # @spell = 
+        # render :test
     end
 end
