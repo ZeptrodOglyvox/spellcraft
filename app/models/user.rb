@@ -3,6 +3,7 @@ class User < ApplicationRecord
     before_save :encrypt_password
 
     has_many :spells
+    has_many :characters
 
     validates :username, presence: true, uniqueness: true
     validates :email, presence: true, uniqueness: true, 'valid_email_2/email': true

@@ -2,7 +2,7 @@ class SpellsController < ApplicationController
     before_action :require_authentication
 
     def index
-        @spells = Spell.all # .where('user_id = ? or user_id IS NULL', current_user.id)
+        @spells = Spell.where('user_id = ? or user_id IS NULL', current_user.id)
     end
 
     def new

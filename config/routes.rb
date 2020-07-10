@@ -16,8 +16,6 @@ Rails.application.routes.draw do
 
   get '/password_sent', to: 'authentication#password_sent'
 
-  get '/delete/:username', to: 'authentication#destroy_user'
-
   get '/forgot_password', to: 'authentication#forgot_password'
   put '/forgot_password', to: 'authentication#send_password_reset_instructions'
 
@@ -31,4 +29,5 @@ Rails.application.routes.draw do
   post '/test2', to: 'home#test2'
 
   resources :spells
+  resources :characters
 end

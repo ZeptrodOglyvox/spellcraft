@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_08_184845) do
+ActiveRecord::Schema.define(version: 2020_07_10_185214) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "available_spells", force: :cascade do |t|
+    t.bigint "character_specialization_id", null: false
+    t.bigint "spell_id", null: false
+    t.boolean "counts"
+    t.string "note"
+    t.index ["character_specialization_id"], name: "index_available_spells_on_character_specialization_id"
+    t.index ["spell_id"], name: "index_available_spells_on_spell_id"
+  end
 
   create_table "caster_classes", force: :cascade do |t|
     t.string "name"
@@ -26,9 +35,26 @@ ActiveRecord::Schema.define(version: 2020_07_08_184845) do
     t.bigint "spell_id", null: false
   end
 
+  create_table "character_specializations", force: :cascade do |t|
+    t.bigint "character_id"
+    t.bigint "caster_class_id"
+    t.string "sub1"
+    t.string "sub2"
+    t.integer "level"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "spellcasting_ability_score"
+    t.index ["caster_class_id"], name: "index_character_specializations_on_caster_class_id"
+    t.index ["character_id"], name: "index_character_specializations_on_character_id"
+  end
+
   create_table "characters", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "name"
+    t.string "race"
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_characters_on_user_id"
   end
 
   create_table "spells", force: :cascade do |t|

@@ -1,0 +1,14 @@
+<% content_for :page_title do %>Characters<% end %>
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Race</th>
+    </tr>
+    <% @characters.each do |c| %>
+        <tr>
+            <td><%= link_to c.name, character_path(c) %></td>
+            <td><%= c.race %></td>
+        </tr>
+    <% end %>
+</table>

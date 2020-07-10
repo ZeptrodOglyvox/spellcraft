@@ -1,0 +1,41 @@
+<% content_for :page_title do %>New Character<% end %>
+
+<%= form_with model: @character, local: true do |f| %>
+<p>
+    <%= f.label 'Name' %>
+    <%= f.text_field :name %>
+    <%= show_field_error(@character, :name) %>
+</p>
+
+<p>
+    <%= f.label 'Race' %>
+    <%= f.select :race, Character.all_races %>
+    <%= show_field_error(@character, :race) %>
+</p>
+
+
+<ul>
+    <%= fields_for :character_specializations do |cf| %>
+    <li>
+        <%= cf.label 'Class' %>
+        <%= cf.select :caster_class, CharacterSpecialization.all_classes %>
+        <!-- TODO Show field error -->
+    </li>
+    <li>
+        <%= cf.label 'Level' %>
+        <%= cf.select :level, (1..20) %>
+    </li>
+    <li>
+        <%= cf.label 'Spellcasting Ability Score' %>
+        <%= cf.select :spellcasting_ability_score, (1..30) %>
+    </li>
+    <% end %>
+</ul>
+
+<p>
+    <%= f.submit 'Create' %>
+</p>
+
+
+
+<% end %>
