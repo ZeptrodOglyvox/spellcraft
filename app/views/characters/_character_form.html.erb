@@ -1,0 +1,44 @@
+<%= form_with model: @character, local: true do |f| %>
+<p>
+    <%= f.label 'Name' %>
+    <%= f.text_field :name %>
+    <%= show_field_error(@character, :name) %>
+</p>
+
+<p>
+    <%= f.label 'Race' %>
+    <%= f.select :race, Character.all_races %>
+    <%= show_field_error(@character, :race) %>
+</p>
+
+
+<ul>
+    <%= fields_for :character_specializations, @character.character_specializations.first do |cf| %>
+    <li>
+        <%= cf.label 'Class' %>
+        <%= cf.select :character_class, CharacterSpecialization.all_classes %>
+        <%= show_field_error(@character.character_specializations.first, :character_class) %>
+    </li>
+    <li>
+        <%= cf.label 'Subclass' %>
+        <%= cf.select :subclass, CharacterSpecialization.all_subclasses.unshift(nil) %>
+        <%= show_field_error(@character.character_specializations.first, :subclass) %>
+    </li>
+    <li>
+        <%= cf.label 'Level' %>
+        <%= cf.select :level, (1..20) %>
+        <%= show_field_error(@character.character_specializations.first, :level) %>
+    </li>
+    <li>
+        <%= cf.label 'Spellcasting Ability Score' %>
+        <%= cf.select :spellcasting_ability_score, (1..30) %>
+        <%= show_field_error(@character.character_specializations.first, :spellcasting_ability_score) %>
+    </li>
+    <% end %>
+</ul>
+
+<p>
+    <%= f.submit button %>
+</p>
+
+<% end %>

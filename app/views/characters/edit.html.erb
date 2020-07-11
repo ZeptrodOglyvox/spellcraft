@@ -1,0 +1,3 @@
+<% content_for :page_title do %>Edit <%= @character.name %> <% end %>
+
+<%= render partial: 'character_form', locals: { button: 'Update' } %>

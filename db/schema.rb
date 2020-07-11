@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_10_185214) do
+ActiveRecord::Schema.define(version: 2020_07_11_173043) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,14 +37,13 @@ ActiveRecord::Schema.define(version: 2020_07_10_185214) do
 
   create_table "character_specializations", force: :cascade do |t|
     t.bigint "character_id"
-    t.bigint "caster_class_id"
-    t.string "sub1"
+    t.string "subclass"
     t.string "sub2"
     t.integer "level"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "spellcasting_ability_score"
-    t.index ["caster_class_id"], name: "index_character_specializations_on_caster_class_id"
+    t.string "character_class"
     t.index ["character_id"], name: "index_character_specializations_on_character_id"
   end
 

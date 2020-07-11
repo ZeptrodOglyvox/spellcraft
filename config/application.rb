@@ -23,6 +23,8 @@ module Spellcraft
     # the framework and any gems in your application.
 
     config.action_mailer.default_url_options = { host: 'localhost:3000/' }
+    config.autoload_paths += %W(#{config.root}/lib)
+    config.autoload_paths += Dir["#{config.root}/lib/**/"]
   end
 end
 

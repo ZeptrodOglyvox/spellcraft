@@ -23,7 +23,7 @@ class Spell < ApplicationRecord
             time_units = /[1-9]\d* (round|second|minute|hour|day|week|month|year)s?/
             
             # TODO figure out pluralization if somehow you get '10 year' etc.
-            if not (specific.include?(casting_time) or casting_time =~ time_units)
+            if not (specific.include?(casting_time) || casting_time =~ time_units)
                 errors.add(:casting_time, 'Please provide a valid casting time. (e.g. "1 bonus action", "1 day")')
             end
         end
@@ -34,7 +34,7 @@ class Spell < ApplicationRecord
             specific = ['self', 'touch', 'special', '1 foot', '1 mile']
             length_units = /[1-9]\d* (feet|miles)/
             
-            if not (specific.include?(range) or range =~ length_units)
+            if not (specific.include?(range) || range =~ length_units)
                 errors.add(:range, 'Please provide a valid range. (e.g. "self", "62 feet")')
             end
         end
@@ -58,7 +58,7 @@ class Spell < ApplicationRecord
             specific = ['instantaneous', 'until dispelled', 'until triggered', 'until dispelled or triggered', 'special']
             time_units = /[1-9]\d* (round|second|minute|hour|day|week|month|year)s?/
 
-            if not (specific.include?(duration) or duration =~ time_units)
+            if not (specific.include?(duration) || duration =~ time_units)
                 errors.add(:duration, 'Please specify a valid duration. (e.g. "instantaneous", "until dispelled", "10 days")')
             end
 

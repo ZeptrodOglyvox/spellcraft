@@ -1,0 +1,39 @@
+name,subclass_of
+bard,nil
+college of lore,bard
+college of valor,bard
+cleric,nil
+knowledge domain,cleric
+life domain,cleric
+light domain,cleric
+nature domain,cleric
+tempest domain,cleric
+trickery domain,cleric
+war domain,cleric
+druid,nil
+arctic-circle of the land,druid
+coast-circle of the land,druid
+desert-circle of the land,druid
+forest-circle of the land,druid
+grassland-circle of the land,druid
+mountain-circle of the land,druid
+swamp-circle of the land,druid
+underdark-circle of the land,druid
+circle of the moon,druid
+fighter,nil
+eldritch knight,fighter
+paladin,nil
+oath of devotion,paladin
+oath of ancients,paladin
+oath of vengeance,paladin
+ranger,nil
+hunter,ranger
+beast master,ranger
+rogue,nil
+arcane trickster,rogue
+sorcerer,nil
+warlock,nil
+the fiend,warlock
+the archfey,warlock
+the great old one,warlock
+wizard,nil

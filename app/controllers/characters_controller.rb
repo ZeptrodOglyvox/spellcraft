@@ -11,18 +11,72 @@ class CharactersController < ApplicationController
 
     def create 
         @character = Character.new(character_params)
-        @character.user = current_user
-        @character.character_specializations << CharacterSpecialization(character_specialization_params)
+        @character.character_specializations << 
+            CharacterSpecialization.new(character_specialization_params)
+
         if @character.save
-            redirect_to :root, notice: 'Character Created'
+            redirect_to @character, notice: 'Character Created'
         else
             render :new
         end
     end
 
+    def show
+        @character = find_character_by_id(params[:id])
+        if @character.nil?
+            flash[:error] = 'Character not found'
+            redirect_back fallback_location: :root
+        end
+    end
+
+    def edit
+        @character = find_character_by_id(params[:id])
+    end
+
+    def update
+        @character = find_character_by_id(params[:id])
+        @character.assign_attributes(character_params)
+        @character.character_specializations.each do |cs|
+            cs.update(character_specialization_params)
+        end 
+
+        if @character.save
+            redirect_to @character, notice: 'Character Updated'
+        else
+            render :edit
+        end
+    end
+
+    def destroy
+        @character = find_character_by_id(params[:id])
+        if @character
+            flash[:notice] = "Character #{@character.name} deleted."
+            @character.destroy
+        else
+            flash[:error] = "Requested deletion of invalid character with id #{params[:id]}."
+        end
+        redirect_to :root
+    end
+
     private
 
     def character_params
-        params.require(:character).permit(:name, :race)
+        ret = params.require(:character).permit(:name, :race)
+        ret[:user] = current_user
+        ret
+    end
+
+    def character_specialization_params
+        params.require(:character_specializations).permit(:character_class, :level, :subclass, :spellcasting_ability_score)
+    end
+
+    def find_character_by_id(id)
+        ret = Character.find_by_id(id)
+        if ret && ret.user != current_user
+            flash[:error] = 'You must be the character\'s creator to access this method.'
+            redirect_to :root
+        end
+        ret
     end
 end
+

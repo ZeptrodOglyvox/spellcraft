@@ -1,0 +1,24 @@
+<% content_for :page_title do @character.name end %>
+
+<p>
+    Race: <%= @character.race %>
+</p>
+
+<% @character.character_specializations.each do |charspec| %>
+<p>
+    Level <%= charspec.level %>
+    <%= charspec.character_class.titlecase %>
+    <%= '(' + charspec.subclass.titlecase + ')' if charspec.subclass %>
+</p>
+Spells:
+<% charspec.spells.each do |spell| %>
+<p>
+    <%= link_to spell.name, spell_path(spell) %>
+</p>
+<% end %>
+<% end %>
+
+<p>
+    <%= link_to 'Edit', edit_character_path %>
+    <%= link_to 'Delete', character_path, method: :delete %>
+</p>

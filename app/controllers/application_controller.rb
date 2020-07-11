@@ -13,4 +13,14 @@ class ApplicationController < ActionController::Base
             redirect_to :root, flash: { error: 'You must be logged in to access this page.' }
         end
     end
+
+    def String.titlecase
+        tmp = self.split(' ')
+        tmp.each do |word|
+            if word.length > 2
+                word.capitalize!
+            end
+        end
+        tmp.join(' ')
+    end
 end
