@@ -10,6 +10,7 @@
     <%= charspec.character_class.titlecase %>
     <%= '(' + charspec.subclass.titlecase + ')' if charspec.subclass %>
 </p>
+
 Spells:
 <% (0..9).each do |level| %>
 <p>
@@ -22,6 +23,9 @@ Spells:
 </ul>
 </p>
 <% end %>
+<p>
+    <%= link_to 'Edit this class spells', edit_spells_character_path(charspec) %>
+</p>
 <% end %>
 
 <p>

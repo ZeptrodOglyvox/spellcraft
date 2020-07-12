@@ -1,5 +1,5 @@
 class Character < ApplicationRecord
-    has_many :character_specializations, dependent: :destroy, autosave: true
+    has_many :character_specializations, dependent: :destroy #, autosave: true
     accepts_nested_attributes_for :character_specializations, allow_destroy: true
     belongs_to :user
     
@@ -11,6 +11,7 @@ class Character < ApplicationRecord
     ]
 
     validates :name, :race, :user, presence: true
+    validates :character_specializations, presence: {message: 'Character must have at least one class.'}
     validates :race, inclusion: {in: RACES, message: 'Invalid race'}
     validates_associated :character_specializations
     validate :unique_classes

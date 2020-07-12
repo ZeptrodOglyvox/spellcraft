@@ -41,7 +41,7 @@ class SpellsController < ApplicationController
     end
 
     def update
-        @spell = Spell.get_spell_by_id(params[:id])
+        @spell = get_spell_by_id(params[:id])
 
         @spell.assign_attributes(spell_params)
 

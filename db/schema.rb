@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_11_173043) do
+ActiveRecord::Schema.define(version: 2020_07_12_171526) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 2020_07_11_173043) do
   create_table "available_spells", force: :cascade do |t|
     t.bigint "character_specialization_id", null: false
     t.bigint "spell_id", null: false
-    t.boolean "counts"
+    t.boolean "counts", default: true
     t.string "note"
     t.index ["character_specialization_id"], name: "index_available_spells_on_character_specialization_id"
     t.index ["spell_id"], name: "index_available_spells_on_spell_id"

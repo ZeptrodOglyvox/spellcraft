@@ -1,5 +1,5 @@
 module ApplicationHelper
-    def show_field_error(model, field)
+    def show_field_error(model, field) # TODO put error display in a partial and render it in views
         if !model.nil?
             s=""
 
@@ -13,20 +13,6 @@ module ApplicationHelper
             end
             s.html_safe
         end
-    end
-
-    def show_message(messages, field)
-        s=""
-
-        if !messages[field].empty?
-            s = 
-            <<-EOHTML
-            <div id="message">
-                #{messages[field][0]}
-            </div>
-            EOHTML
-        end
-        s.html_safe
     end
 
     def i2ord(i)

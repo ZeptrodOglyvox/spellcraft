@@ -1,0 +1,14 @@
+<% content_for :page_title do
+    "Edit #{@charspec.character.name}'s #{@charspec.character_class} spells" 
+end %>
+
+<%= form_with model: @charspec, local: true, method: :put, url: edit_spells_character_path do |f| %>
+<p>
+    <%= f.collection_check_boxes :spell_ids, current_user.spells, :id, :name %>
+    <%= show_field_error(@charspec, :spells) %>
+</p>
+<p>
+    <%= f.submit 'Update' %>
+</p>
+
+<% end %>

@@ -29,5 +29,13 @@ Rails.application.routes.draw do
   post '/test2', to: 'home#test2'
 
   resources :spells
-  resources :characters
+  resources :characters do 
+    member do
+      get '/edit_spells', to: 'characters#edit_spells'
+      put '/edit_spells', to: 'characters#update_spells'
+    end
+  end
+  
+  # get '/edit_spells', to: 'character#edit_spells'
+  # put '/edit_spells', to: 'character#update_spells'
 end

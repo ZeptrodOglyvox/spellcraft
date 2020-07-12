@@ -35,6 +35,10 @@ Classes
         <%= show_field_error(@character.character_specializations[cf.index], :spellcasting_ability_score) %>
     </li>
     <li>
+        <%= cf.label 'Add default spells if any' %>
+        <%= cf.check_box :should_add_default_spells %>
+    </li>
+    <li>
         <%= cf.label 'Delete' %>
         <%= cf.check_box :_destroy %>
     </li>
