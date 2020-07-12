@@ -5,10 +5,14 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug Local File",
+            "name": "Debug Rails Server",
             "type": "Ruby",
             "request": "launch",
-            "program": "C:\\Users\\Nikos\\Desktop\\test.rb"
+            "cwd": "${workspaceRoot}",
+            "program": "${workspaceRoot}/bin/rails",
+            "args": [
+                "server"
+            ]
         }
     ]
 }

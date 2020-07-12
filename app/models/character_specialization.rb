@@ -19,6 +19,10 @@ class CharacterSpecialization < ApplicationRecord
         SUBCLASSES.values.flatten
     end
 
+    def spells_by_level
+        spells.inject(Hash.new{|h,k| h[k] = []}) { |ret, s| ret[s.level] << s; ret }
+    end
+
     validates :character_class, presence: true, inclusion: {in: ALL_CLASSES, message: 'Invalid Class'}
     validate :subclass_is_valid
     validates :level, presence: true, inclusion: {in: (1..20), message: "Invalid level."}

@@ -11,9 +11,15 @@
     <%= '(' + charspec.subclass.titlecase + ')' if charspec.subclass %>
 </p>
 Spells:
-<% charspec.spells.each do |spell| %>
+<% (0..9).each do |level| %>
 <p>
-    <%= link_to spell.name, spell_path(spell) %>
+    <%= level == 0 ? 'Cantrips' : "Level #{level}" %>
+<ul>
+    <!-- TODO maybe the query is executed many times? -->
+    <% charspec.spells_by_level[level].each do |spell| %>
+    <li><%= link_to spell.name, spell_path(spell) %></li>
+    <% end %>
+</ul>
 </p>
 <% end %>
 <% end %>

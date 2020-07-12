@@ -11,31 +11,36 @@
     <%= show_field_error(@character, :race) %>
 </p>
 
-
+Classes
+<%= show_field_error(@character, :character_specializations) %>
+<%= f.fields_for :character_specializations do |cf| %>
 <ul>
-    <%= fields_for :character_specializations, @character.character_specializations.first do |cf| %>
     <li>
-        <%= cf.label 'Class' %>
         <%= cf.select :character_class, CharacterSpecialization.all_classes %>
-        <%= show_field_error(@character.character_specializations.first, :character_class) %>
+        <%= show_field_error(@character.character_specializations[cf.index], :character_class) %>
     </li>
     <li>
         <%= cf.label 'Subclass' %>
         <%= cf.select :subclass, CharacterSpecialization.all_subclasses.unshift(nil) %>
-        <%= show_field_error(@character.character_specializations.first, :subclass) %>
+        <%= show_field_error(@character.character_specializations[cf.index], :subclass) %>
     </li>
     <li>
         <%= cf.label 'Level' %>
         <%= cf.select :level, (1..20) %>
-        <%= show_field_error(@character.character_specializations.first, :level) %>
+        <%= show_field_error(@character.character_specializations[cf.index], :level) %>
     </li>
     <li>
         <%= cf.label 'Spellcasting Ability Score' %>
         <%= cf.select :spellcasting_ability_score, (1..30) %>
-        <%= show_field_error(@character.character_specializations.first, :spellcasting_ability_score) %>
+        <%= show_field_error(@character.character_specializations[cf.index], :spellcasting_ability_score) %>
     </li>
-    <% end %>
+    <li>
+        <%= cf.label 'Delete' %>
+        <%= cf.check_box :_destroy %>
+    </li>
 </ul>
+<% end %>
+
 
 <p>
     <%= f.submit button %>

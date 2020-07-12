@@ -7,12 +7,12 @@ class CharactersController < ApplicationController
     
     def new
         @character = Character.new
+        @character.character_specializations << CharacterSpecialization.new
+        @character.character_specializations << CharacterSpecialization.new
     end
 
     def create 
         @character = Character.new(character_params)
-        @character.character_specializations << 
-            CharacterSpecialization.new(character_specialization_params)
 
         if @character.save
             redirect_to @character, notice: 'Character Created'
@@ -36,9 +36,6 @@ class CharactersController < ApplicationController
     def update
         @character = find_character_by_id(params[:id])
         @character.assign_attributes(character_params)
-        @character.character_specializations.each do |cs|
-            cs.update(character_specialization_params)
-        end 
 
         if @character.save
             redirect_to @character, notice: 'Character Updated'
@@ -61,13 +58,13 @@ class CharactersController < ApplicationController
     private
 
     def character_params
-        ret = params.require(:character).permit(:name, :race)
+        ret = params.require(:character).permit(
+            :name, :race,  
+            character_specializations_attributes: 
+                [:id, :character_class, :subclass, :level, :spellcasting_ability_score, :_destroy]
+        )
         ret[:user] = current_user
         ret
-    end
-
-    def character_specialization_params
-        params.require(:character_specializations).permit(:character_class, :level, :subclass, :spellcasting_ability_score)
     end
 
     def find_character_by_id(id)

@@ -1,7 +1,7 @@
 require 'CSV'
 
 module CharacterClasses
-    @filepath = 'C:\Users\Nikos\Desktop\character_classes.csv'
+    @filepath = 'C:\Users\Nikos\Documents\Projects\spellcraft\lib\character_classes.csv'
 
     def self.get_all
         subclasses = {}
